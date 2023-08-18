@@ -5,8 +5,8 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
+import android.graphics.Rect;
 import android.os.Build;
 import android.os.IBinder;
 import android.os.Process;
@@ -22,6 +22,15 @@ public class RemoteService extends Service {
         public int getPid() throws RemoteException {
             Log.d(TAG, "getPid: ");
             return Process.myPid();
+        }
+
+        @Override
+        public Rect getRect() throws RemoteException {
+            Rect rect = new Rect(10, 11, 12, 13);
+            Log.d(TAG, "getRect: " + rect);
+            Log.d(TAG, "getRect: left: " + rect.left + ", top: " + rect.top
+                    + ", right: " + rect.right + ", bottom: " + rect.bottom);
+            return rect;
         }
 
         @Override

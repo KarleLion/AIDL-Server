@@ -8,6 +8,7 @@ import android.app.Service;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.IBinder;
 import android.os.Process;
 import android.os.RemoteException;
@@ -16,6 +17,8 @@ import android.util.Log;
 public class RemoteService extends Service {
 
     private static final String TAG = "RemoteService-";
+
+    private Rect rect;
 
     private final IRemoteService.Stub binder = new IRemoteService.Stub() {
         @Override
@@ -26,11 +29,23 @@ public class RemoteService extends Service {
 
         @Override
         public Rect getRect() throws RemoteException {
-            Rect rect = new Rect(10, 11, 12, 13);
-            Log.d(TAG, "getRect: " + rect);
-            Log.d(TAG, "getRect: left: " + rect.left + ", top: " + rect.top
+
+            /*Rect rect = new Rect(10, 11, 12, 13);*/
+            // todo 无法重写 Rect.toString()
+            // Log.d(TAG, "getRect: " + rect);
+
+            Log.d(TAG, rect == null ? "rect = null" : "rect: left: " + rect.left + ", top: " + rect.top
                     + ", right: " + rect.right + ", bottom: " + rect.bottom);
+
             return rect;
+        }
+
+        @Override
+        public void saveRect(Bundle bundle) throws RemoteException {
+            bundle.setClassLoader(getClass().getClassLoader());
+            // Do more with the parcelable.
+            // process(rect);
+            rect = bundle.getParcelable("rect");
         }
 
         @Override
